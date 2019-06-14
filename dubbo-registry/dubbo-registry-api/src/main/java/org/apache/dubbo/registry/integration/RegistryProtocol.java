@@ -242,7 +242,8 @@ public class RegistryProtocol implements Protocol {
 
         return (ExporterChangeableWrapper<T>) bounds.computeIfAbsent(key, s -> {
             Invoker<?> invokerDelegate = new InvokerDelegate<>(originInvoker, providerUrl);
-            return new ExporterChangeableWrapper<>((Exporter<T>) protocol.export(invokerDelegate), originInvoker);
+            Exporter<T> exp = (Exporter<T>) protocol.export(invokerDelegate); //设置一个临时变量方便调试
+            return new ExporterChangeableWrapper<>(exp, originInvoker);
         });
     }
 

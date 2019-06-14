@@ -637,8 +637,8 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
                 .setHost(LOCALHOST_VALUE)
                 .setPort(0)
                 .build();
-        Exporter<?> exporter = protocol.export(
-                PROXY_FACTORY.getInvoker(ref, (Class) interfaceClass, local));
+        Invoker tempInvoker=PROXY_FACTORY.getInvoker(ref, (Class) interfaceClass, local);
+        Exporter<?> exporter = protocol.export(tempInvoker);
         exporters.add(exporter);
         logger.info("Export dubbo service " + interfaceClass.getName() + " to local registry url : " + local);
     }
