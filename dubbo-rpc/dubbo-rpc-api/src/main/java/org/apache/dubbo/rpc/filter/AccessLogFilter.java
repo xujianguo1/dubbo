@@ -63,6 +63,8 @@ import static org.apache.dubbo.rpc.Constants.ACCESS_LOG_KEY;
  * &lt;/logger&gt;
  * </pre></code>
  */
+//group 为provider，仅用于发布服务
+//value 有值，需要在配置里面， accesslog 属性配置项有值
 @Activate(group = PROVIDER, value = ACCESS_LOG_KEY)
 public class AccessLogFilter implements Filter {
 

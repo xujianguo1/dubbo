@@ -80,25 +80,25 @@ public class ExtensionLoader<T> {
 
     private static final ConcurrentMap<Class<?>, Object> EXTENSION_INSTANCES = new ConcurrentHashMap<>();
 
-    // ==============================
+    // ===============基础数据===============
+    private String cachedDefaultName; //SPI 默认扩展名称
+    private final Class<?> type;   //当前加载的SPI class 类型
+    private final ExtensionFactory objectFactory; //对象工厂的SPI 的扩展， 用于对Extension 注入属性（set方法对象）
 
-    private final Class<?> type;
-
-    private final ExtensionFactory objectFactory;
-
-    private final ConcurrentMap<Class<?>, String> cachedNames = new ConcurrentHashMap<>();
-
-    private final Holder<Map<String, Class<?>>> cachedClasses = new Holder<>();
-
-    private final Map<String, Object> cachedActivates = new ConcurrentHashMap<>();
-    private final ConcurrentMap<String, Holder<Object>> cachedInstances = new ConcurrentHashMap<>();
-    private final Holder<Object> cachedAdaptiveInstance = new Holder<>();
+    //  =========Class 缓存=========
     private volatile Class<?> cachedAdaptiveClass = null;
-    private String cachedDefaultName;
+    private final Holder<Map<String, Class<?>>> cachedClasses = new Holder<>();
+    private Set<Class<?>> cachedWrapperClasses;  //Warp扩展 class集合。 如果一个扩展的构造函数参数类型为当前扩展，则这个扩展为Wrap型
+
+    // ==========Instance 缓存=================
+    private final Holder<Object> cachedAdaptiveInstance = new Holder<>(); //Adaptive 实例缓存
+    private final ConcurrentMap<String, Holder<Object>> cachedInstances = new ConcurrentHashMap<>(); //生成的扩展实例缓存
+
+    private final Map<String, Object> cachedActivates = new ConcurrentHashMap<>(); //Activate 扩展实例缓存
+
+    //  =============运行时产生内容=============
+    private final ConcurrentMap<Class<?>, String> cachedNames = new ConcurrentHashMap<>(); //缓存的扩展点Class-名称  映射
     private volatile Throwable createAdaptiveInstanceError;
-
-    private Set<Class<?>> cachedWrapperClasses;
-
     private Map<String, IllegalStateException> exceptions = new ConcurrentHashMap<>();
 
     private ExtensionLoader(Class<?> type) {
